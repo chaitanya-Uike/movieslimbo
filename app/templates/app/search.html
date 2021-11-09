@@ -1,0 +1,23 @@
+{% extends 'app/main.html' %}
+
+{% load static %}
+
+{% block title %}Search{% endblock title %}
+
+{% block body %}
+<script src="{% static 'js/search.js' %} defer"></script>
+
+<div class="card-container">
+
+</div>
+
+{% endblock body %}
+
+{% comment %} <div class="card w-75">
+    <div class="card-body">
+        <img src="https://image.tmdb.org/t/p/w92/{{result.poster_path}}" alt="">
+        <h5 class="card-title">{{result.title}}</h5>
+        <p class="card-text">{{result.release_date}}</p>
+        <a href="{% url 'info' result.id %}" class="btn btn-primary">Add</a>
+    </div>
+</div> {% endcomment %}

@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+
+{% load static %}
+
+{% block title %}Register{% endblock title %}
+
+{% block scripts %}
+<script src="{% static 'js/register.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block body %}
+
+
+
+<div id="alert-card" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+    <strong>registration failed</strong>
+    <div id="errors"></div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+
+<form class="form-container w-50 mx-auto my-4" id="registration-form" autocomplete="off">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" , id="username" , name="username" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" , id="email" , name="email" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="password1" class="form-label">Password</label>
+        <input type="password" name="password1" id="password1" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="password2" class="form-label">Password confirmation</label>
+        <input type="password" name="password2" id="password2" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Sign-up</button>
+</form>
+<p class="text-center">Already have an account? <a href="{% url 'login' %}">login</a></p>
+{% endblock body %}

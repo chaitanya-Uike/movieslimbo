@@ -1,0 +1,30 @@
+{% extends 'app/main.html' %}
+
+{% block title %}{{result.title}}{% endblock title %}
+
+{% load static %}
+
+{% block body %}
+<img src="https://image.tmdb.org/t/p/w1280/{{result.backdrop_path}}" style="width:100%;" alt="backdrop">
+<h1>{{result.title}}</h1>
+<img src="https://image.tmdb.org/t/p/w185/{{result.poster_path}}" alt="poster">
+<p>{{result.overview}}</p>
+<p>Tagline : {{result.tagline}}</p>
+{% for genre in result.genres %}
+<div class="genre-container btn btn-sm btn-success m-2">
+    {{genre.name}}
+</div>
+{% endfor %}
+<p>Status : {{result.status}}</p>
+<p>Release Date : {{result.release_date}}</p>
+<p>Runtime : {{result.runtime}} min</p>
+
+<form action="{% url 'update' result.id %}" method="post" id="info-update-form" movie_id="{{result.id}}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-info m-2">Save</button>
+</form>
+
+<!-- <script src="{% static 'js/info.js' %}"></script> -->
+
+{% endblock body %}

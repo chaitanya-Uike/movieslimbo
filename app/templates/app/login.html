@@ -1,0 +1,33 @@
+{% extends 'app/base.html' %}
+
+{% load static %}
+
+{% block title %}Login{% endblock title %}
+
+{% block scripts %}
+<script src="{% static 'js/login.js' %}" defer></script>
+{% endblock scripts %}
+
+
+
+{% block body %}
+
+<div id="alert-card" class="alert alert-danger" role="alert" style="display: none;">
+    <strong>Login Failed! </strong> check username and password
+</div>
+
+<form class="form-container w-50 mx-auto my-3" id="login-form" autocomplete="off">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name="username">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password">
+    </div>
+    <button type="submit" class="btn btn-primary">Log-in</button>
+</form>
+<p class="text-center">Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+
+{% endblock body %}

@@ -1,0 +1,79 @@
+#search-icon{
+    cursor: pointer;
+}
+
+#search-bar{
+    z-index: 2;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%, 20%);
+    transform: translate(-50%, 20%);
+}
+
+#close-search-container{
+    z-index: 1;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+#result-container{
+    display: none;
+    z-index: 2;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%, 15%);
+    transform: translate(-50%, 15%);
+    padding: 10px;
+    width: 60%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px 4px rgba(0,0,0,0.10);
+    -webkit-box-shadow: 1px 1px 5px 4px rgba(0,0,0,0.10);
+    -moz-box-shadow: 1px 1px 5px 4px rgba(0,0,0,0.10);
+}
+
+.result-card{
+    text-decoration: none;
+    cursor: pointer;
+    margin: 0 auto;
+    width: 100%;
+    padding: 10px 50px;
+    background-color: white;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+    "img title"
+    "img year";
+}
+
+.result-card h5{
+    font-size: 15px;
+    margin: 0;
+    color: black;
+}
+
+.result-card p{
+    font-size: 12px;
+    margin: 0;
+    color: gray;
+}
+
+.result-card:hover{
+    background-color: lightskyblue;
+}
+
+.img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightcyan;
+    border-radius: 5px;
+    grid-area: img;
+    width: 50px;
+    height: 70px;
+}
