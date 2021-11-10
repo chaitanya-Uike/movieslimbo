@@ -2,65 +2,41 @@
 
 {% load static %}
 
-{% block css %}
-<link rel="stylesheet" href=" {% static 'css/profile.css' %} "> {% endblock css %}link
+{% block style %}{% static 'css/profile.css' %} {% endblock style %}
+{% block style2 %}{% static 'css/edit.css' %}{% endblock style2 %}
 {% block title %}{{username}}{% endblock title %}
 {% block profileactive %}active{% endblock profileactive %}
 
 {% block body %}
 <main>
-    <div id="close-popup-container"></div>
-    <div class="edit-container">
-        <h4 id="edit-container-title"></h4>
-        {% include 'app/form.html' %}
-        <a id="remove-item" class="btn btn-danger my-2">remove</a>
-    </div>
     <div class="list-container">
         <div class="list-header info-card">
-            <h4 class="title">Title</h4>
-            <h4 class="status">Status</h4>
-            <h4 class="score">Score</h4>
-            {% if permission %}
-            <div id="spacing"></div>
-            {% endif %}
+            <h6 class="title">Title</h6>
+            <h6 class="status">Status</h6>
+            <h6 class="score">Score</h6>
         </div>
         {% for item in data %}
         <div class="info-card" id="{{item.movie_id}}" status="{{item.status}}" score="{{item.score}}"
-            title="{{item.title}}">
+            title="{{item.title}}" img="{{item.img}}" backdrop="{{item.backdrop}}">
             <img class="card-img" src="https://image.tmdb.org/t/p/w92/{{item.img}}" alt="">
             <a class="title text-decoration-none" href="{% url 'info' item.movie_id%}">{{item.title}}</a>
             <p class="status">{{item.status}}</p>
             <p class="score">{{item.score}}</p>
-            {% if permission %}
-            <button class="btn btn-primary edit-btn" id="{{item.movie_id}}">edit</button>
-            {% endif %}
+            <i class="material-icons edit-button">dehaze</i>
         </div>
         {% endfor %}
     </div>
 </main>
 
-<script>
-    Array.from(document.getElementsByClassName("edit-btn")).forEach(element => {
-        element.addEventListener("click", event => {
+<div class="close-edit-container"></div>
+<div class="edit-container">
+    <img class="edit-container-backdrop"></img>
+    <div class="form-container">
+        <h4 id="edit-from-title"></h4>
+        {% include 'app/form.html' %}
+    </div>
+</div>
 
-            document.querySelector("#close-popup-container").style.display = "inline-block";
-            document.querySelector(".edit-container").style.display = "inline-block";
+<script src="{% static 'js/profile.js' %}"></script>
 
-            let status = event.target.parentElement.getAttribute("status")
-            let score = event.target.parentElement.getAttribute("score")
-            let title = event.target.parentElement.getAttribute("title")
-            let id = event.target.parentElement.getAttribute("id")
-            document.querySelector("#edit-form").setAttribute("action", `/edit/{{request.user.username}}/${id}/`)
-            document.querySelector("#remove-item").setAttribute("href", `/remove/{{request.user.username}}/${id}/`)
-            document.querySelector("#edit-container-title").innerHTML = title
-            document.querySelector("#id_status").value = status
-            document.querySelector("#id_score").value = score
-        })
-    })
-
-    document.querySelector("#close-popup-container").addEventListener("click", function (event) {
-        event.target.style.display = "none";
-        document.querySelector(".edit-container").style.display = "none";
-    });
-</script>
 {% endblock body %}

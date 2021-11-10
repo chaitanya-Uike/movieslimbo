@@ -1,0 +1,10 @@
+{% load static %}
+
+<div class="close-edit-container"></div>
+<div class="edit-container">
+    <img src="https://image.tmdb.org/t/p/w1280/{{response.backdrop_path}}" class="edit-container-backdrop"></img>
+    <div class="form-container">
+        <h4>{{response.title}}</h4>
+        {% include 'app/form.html' %}
+    </div>
+</div>

@@ -1,26 +1,6 @@
-.edit-container{
-    display: none;
-    background-color: white;
-    width: 50vw;
-    border: 1px solid grey;
-    border-radius: 5px;
-    padding: 10px;
-    z-index: 2;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+body{
+    background-color: #EDF1F5;
 }
-
-#close-popup-container{
-    z-index: 1;
-    display: none;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-}
-
 
 .list-header{
     list-style: none;
@@ -29,19 +9,14 @@
 
 .info-card{
     display: grid;
-    grid-template-columns: 1fr 4fr 1.5fr 1fr auto;
+    grid-template-columns: 1fr 4fr 1.5fr 1fr 0.5fr;
     grid-template-areas: "img title status score edit";
     grid-gap:5px;
     align-items: center;
+    background-color: white;
     margin: 10px;
     padding: 10px;
-    border: 1px solid grey;
     border-radius: 5px;
-}
-
-#spacing{
-    grid-area: edit;
-    width: 50px;
 }
 
 .card-img{
@@ -63,4 +38,8 @@
     grid-area: status;
     text-align: center;
     margin: 0;
+}
+
+.edit-button{
+    cursor: pointer;
 }

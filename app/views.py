@@ -131,12 +131,13 @@ def profile(request, username):
     context = {'username': username, 'permission': permission}
 
     class Data:
-        def __init__(self, id, title, status, score, img):
+        def __init__(self, id, title, status, score, img, backdrop):
             self.movie_id = id
             self.title = title
             self.status = status
             self.score = score
             self.img = img
+            self.backdrop = backdrop
 
     # to access the field of parent model use __
     itemList = List.objects.filter(user__username=username)
@@ -147,7 +148,7 @@ def profile(request, username):
                 f'https://api.themoviedb.org/3/movie/{item.movie_id}?api_key=09dbf57fe94efeab48abeb2a2e2d1ca5&language=en-US')
 
             data.append(Data(item.movie_id, response.json(
-            )["title"], item.status, item.score, response.json()["poster_path"]).__dict__)
+            )["title"], item.status, item.score, response.json()["poster_path"], response.json()["backdrop_path"],).__dict__)
 
         context['data'] = data
     return render(request, 'app/profile.html', context)

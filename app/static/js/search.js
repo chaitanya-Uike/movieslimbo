@@ -64,7 +64,7 @@ searchBar.addEventListener("keyup", event => {
         clearTimeout(searchTimeout)
     searchTimeout = setTimeout(() => {
         getSearchResults(csrftoken, keyword)
-    }, 700);
+    }, 250);
 })
 
 let searchBarActive = false
