@@ -1,5 +1,5 @@
 .navbar{
-    z-index: 20;
+    z-index: 10;
 }
 
 #search-icon{
@@ -21,7 +21,6 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.2);
-
     position: fixed;
     left: 50%;
     top: 50%;
@@ -31,11 +30,11 @@
 
 .search-container{
     position: relative;
+    z-index: 1;
 }
 
 #result-container{
     display: none;
-    z-index: 2;
     padding: 10px;
     background-color: white;
     margin-bottom: 30px;
@@ -61,7 +60,6 @@
 
 #user-result-container{
     display: none;
-    z-index: 2;
     padding: 10px;
     background-color: white;
     border-radius: 5px;
@@ -74,6 +72,7 @@
 .result-card{
     text-decoration: none;
     cursor: pointer;
+    outline: none;
     margin: 0 auto;
     width: 100%;
     padding: 10px 50px;
@@ -85,6 +84,19 @@
     grid-template-areas: 
     "img title"
     "img year";
+}
+
+.user-result-card{
+    cursor: pointer;
+    outline: none;
+    margin: 0 auto;
+    width: 100%;
+    padding: 10px 50px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
 }
 
 .result-card h5{
@@ -103,6 +115,16 @@
     background-color: lightcyan;
 }
 
+.user-result-card:hover{
+    background-color: lightcyan;
+}
+
+.user-result-card h5{
+    font-size: 15px;
+    margin: 0 30px;
+    color: black;
+}
+
 .img{
     display: flex;
     justify-content: center;
@@ -110,6 +132,17 @@
     background-color: lightcyan;
     border-radius: 5px;
     grid-area: img;
+    width: 50px;
+    height: 70px;
+}
+
+.user-profile
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightpink;
+    border-radius: 5px;
     width: 50px;
     height: 70px;
 }

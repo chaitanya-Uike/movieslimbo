@@ -88,7 +88,7 @@ def searchUsers(request):
         results = []
         if(len(keyword) > 0):
             data = User.objects.filter(
-                username__icontains=keyword, is_staff=False)
+                username__icontains=keyword, is_staff=False).exclude(username=request.user.username)
             for result in data:
                 results.append({"username": result.username})
 

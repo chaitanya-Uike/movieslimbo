@@ -3,6 +3,8 @@ const searchForm = document.getElementById("search-form")
 const resultContainer = document.getElementById("result-container")
 const userResultContainer = document.getElementById("user-result-container")
 const searchButton = document.getElementById("search-button")
+const resultDisplayContainer = document.querySelector(".result-display-container")
+const closeSearchContainer = document.getElementById("close-search-container")
 
 
 async function searchMovies(csrftoken, keyword) {
@@ -82,7 +84,8 @@ async function searchUsers(csrftoken, keyword) {
         //show only the first five results
         results.slice(0, 5).forEach(result => {
             userResultContainer.innerHTML += `
-            <a href="/profile/${result.username}" class="result-card text-decoration-none">
+            <a href="/profile/${result.username}" class="user-result-card text-decoration-none">
+                <div class="user-profile"></div>
                 <h5>${result.username}</h5>
             </a>
                 `
@@ -118,13 +121,27 @@ searchBar.addEventListener("keyup", event => {
 let searchBarActive = false
 
 //to close the result container and clear searchbar 
-document.getElementById("close-search-container").addEventListener("click", event => {
+closeSearchContainer.addEventListener("click", event => {
     searchBar.style.display = "none"
     resultContainer.style.display = "none"
+    userResultContainer.style.display = "none"
     event.target.style.display = "none"
     searchBar.value = ""
     searchBarActive = false
     searchButton.classList.remove("active")
+})
+
+resultDisplayContainer.addEventListener("click", event => {
+    if (event.target != this) {
+        searchBar.style.display = "none"
+        resultContainer.style.display = "none"
+        userResultContainer.style.display = "none"
+        closeSearchContainer.style.display = "none"
+        searchBar.value = ""
+        searchBarActive = false
+        searchButton.classList.remove("active")
+    }
+
 })
 
 searchBar.addEventListener("focus", event => {
