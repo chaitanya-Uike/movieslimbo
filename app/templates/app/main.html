@@ -35,8 +35,8 @@
                         <a class="nav-link {% block profileactive %}{% endblock profileactive %}" aria-current="page"
                             href="{% url 'profile' request.user %}">Profile</a>
                     </li>
-                    <li class="nav-item">
-                        <a id="search-button" class="nav-link" aria-current="page" href="#">Search</a>
+                    <li class="nav-item" style="cursor:pointer;">
+                        <a id="search-button" class="nav-link" aria-current="page">Search</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -46,11 +46,13 @@
         </div>
     </nav>
     <div id="close-search-container"></div>
-    <form autocomplete="off" id="search-form">{% csrf_token %}
-        <input type="text" name="search-bar" id="search-bar" class="form-control w-50"
-            placeholder="Search movies, shows, users">
-    </form>
-    <div id="result-container"></div>
+    <div class="search-container">
+        <form autocomplete="off" id="search-form">{% csrf_token %}
+            <input type="text" name="search-bar" id="search-bar" class="form-control w-50"
+                placeholder="Search movies, shows, users">
+        </form>
+        <div id="result-container"></div>
+    </div>
     {% block body %}{% endblock body %}
 </body>
 

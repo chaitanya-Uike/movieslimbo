@@ -11,7 +11,12 @@
     <img src="https://image.tmdb.org/t/p/w1280/{{response.backdrop_path}}" class="backdrop-img">
     <div class="side-panel">
         <img src="https://image.tmdb.org/t/p/w500/{{response.poster_path}}" class="poster"></img>
+        {% if initial %}
+        <div class="edit-button">{{initial.status}}</div>
+        {% else %}
         <div class="edit-button">Add to list</div>
+        {% endif %}
+
     </div>
     <div class="info-container">
         <div class="overview-container">

@@ -99,3 +99,7 @@ searchButton.addEventListener("click", event => {
     }
 
 })
+
+searchForm.addEventListener("submit", event => {
+    event.preventDefault()
+})

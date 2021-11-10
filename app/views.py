@@ -86,8 +86,7 @@ def info(request, id):
 
     # get movie data through API
     response = getMovieInfo(id)
-
-    form = AddListItemForm()
+    context = {'response': response}
 
     # have to use filter bcoz get() method does not have attribute exists()
     item = List.objects.filter(user=request.user, movie_id=id)
@@ -95,10 +94,9 @@ def info(request, id):
     # if the item already exists in database display its values
     if item.exists():
         # .first used bcoz filter returns a queryset
-        form.initial = {'status': item.first().status,
-                        'score': item.first().score}
+        context['initial'] = {'status': item.first().status,
+                              'score': item.first().score}
 
-    context = {'response': response, 'form': form}
     return render(request, 'app/info.html', context)
 
 

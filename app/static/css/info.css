@@ -31,7 +31,7 @@ main{
 .info-container{
     grid-area: overview;
     width: 100%;
-    max-width: 800px;
+    width: 85%;
     height: 100%;
     padding: 20px;
 }
