@@ -71,11 +71,26 @@ def searchMovie(keyword):
     return response.json()['results']
 
 
-def search(request):
+def searchMovies(request):
     if request.method == "POST":
         keyword = json.loads(request.body.decode("utf-8"))['keyword']
         if(len(keyword) > 0):
             results = searchMovie(keyword)
+
+            return JsonResponse({"results": results})
+        else:
+            return JsonResponse({'results': []})
+
+
+def searchUsers(request):
+    if request.method == "POST":
+        keyword = json.loads(request.body.decode("utf-8"))['keyword']
+        results = []
+        if(len(keyword) > 0):
+            data = User.objects.filter(
+                username__icontains=keyword, is_staff=False)
+            for result in data:
+                results.append({"username": result.username})
 
             return JsonResponse({"results": results})
         else:

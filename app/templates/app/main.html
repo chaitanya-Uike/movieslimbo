@@ -51,7 +51,10 @@
             <input type="text" name="search-bar" id="search-bar" class="form-control w-50"
                 placeholder="Search movies, shows, users">
         </form>
-        <div id="result-container"></div>
+        <div class="result-display-container">
+            <div id="result-container"></div>
+            <div id="user-result-container"></div>
+        </div>
     </div>
     {% block body %}{% endblock body %}
 </body>

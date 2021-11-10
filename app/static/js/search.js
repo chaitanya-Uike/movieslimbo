@@ -1,11 +1,12 @@
 const searchBar = document.getElementById("search-bar")
 const searchForm = document.getElementById("search-form")
 const resultContainer = document.getElementById("result-container")
+const userResultContainer = document.getElementById("user-result-container")
 const searchButton = document.getElementById("search-button")
 
 
-async function getSearchResults(csrftoken, keyword) {
-    const response = await fetch('/search/', {
+async function searchMovies(csrftoken, keyword) {
+    const response = await fetch('/searchMovies/', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -53,6 +54,52 @@ async function getSearchResults(csrftoken, keyword) {
     }
 }
 
+async function searchUsers(csrftoken, keyword) {
+    const response = await fetch('/searchUsers/', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify({
+            "keyword": keyword,
+        })
+    })
+
+    if (response.ok) {
+        const data = await response.json()
+        const results = data.results
+
+        console.log(results)
+
+        if (results.length > 0)
+            userResultContainer.style.display = "block"
+        else
+            userResultContainer.style.display = "none"
+
+        userResultContainer.innerHTML = ''
+
+        //show only the first five results
+        results.slice(0, 5).forEach(result => {
+            userResultContainer.innerHTML += `
+            <a href="/profile/${result.username}" class="result-card text-decoration-none">
+                <h5>${result.username}</h5>
+            </a>
+                `
+        })
+    }
+    else {
+        console.log("some error occured!")
+    }
+}
+
+
+async function search(csrftoken, keyword) {
+    const response = await Promise.all([
+        searchMovies(csrftoken, keyword),
+        searchUsers(csrftoken, keyword)
+    ])
+}
 
 //set the timeout so that we dont make reqest on each key press
 let searchTimeout
@@ -63,8 +110,9 @@ searchBar.addEventListener("keyup", event => {
     if (searchTimeout != undefined)
         clearTimeout(searchTimeout)
     searchTimeout = setTimeout(() => {
-        getSearchResults(csrftoken, keyword)
+        search(csrftoken, keyword)
     }, 250);
+
 })
 
 let searchBarActive = false
