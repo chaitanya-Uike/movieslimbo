@@ -3,8 +3,10 @@
 }
 
 #search-bar{
+    display: none;
     z-index: 2;
     position: absolute;
+    min-width: 300px;
     left: 50%;
     -webkit-transform: translate(-50%, 20%);
     transform: translate(-50%, 20%);
@@ -14,18 +16,21 @@
     z-index: 1;
     display: none;
     background-color: rgba(0, 0, 0, 0.2);
-    position: fixed;
-    height: 100%;
+    position: absolute;
+    /* subtracting the height of navbar */
+    height: calc(100% - 56px); 
     width: 100%;
 }
 
 #result-container{
     display: none;
     z-index: 2;
-    position: absolute;
+    position: relative;
+    min-width: 350px;
     left: 50%;
-    -webkit-transform: translate(-50%, 15%);
-    transform: translate(-50%, 15%);
+    top:70px;
+    -webkit-transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%);
     padding: 10px;
     width: 60%;
     background-color: white;

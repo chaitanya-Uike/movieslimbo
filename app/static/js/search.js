@@ -1,7 +1,7 @@
 const searchBar = document.getElementById("search-bar")
 const searchForm = document.getElementById("search-form")
 const resultContainer = document.getElementById("result-container")
-const searchButton = document.getElementById("search-icon")
+const searchButton = document.getElementById("search-button")
 
 
 async function getSearchResults(csrftoken, keyword) {
@@ -67,13 +67,35 @@ searchBar.addEventListener("keyup", event => {
     }, 700);
 })
 
+let searchBarActive = false
+
 //to close the result container and clear searchbar 
 document.getElementById("close-search-container").addEventListener("click", event => {
-    event.target.style.display = "none"
+    searchBar.style.display = "none"
     resultContainer.style.display = "none"
+    event.target.style.display = "none"
     searchBar.value = ""
+    searchBarActive = false
+    searchButton.classList.remove("active")
 })
 
 searchBar.addEventListener("focus", event => {
     document.getElementById("close-search-container").style.display = "inline-block"
+})
+
+searchButton.addEventListener("click", event => {
+    if (!searchBarActive) {
+        searchBar.style.display = "block"
+        searchBar.focus()
+        searchBarActive = true
+        searchButton.classList.add("active")
+    }
+    else {
+        searchBar.style.display = "none"
+        document.getElementById("close-search-container").style.display = "none"
+        searchBar.value = ""
+        searchBarActive = false
+        searchButton.classList.remove("active")
+    }
+
 })
