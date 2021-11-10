@@ -8,6 +8,7 @@
 {% block profileactive %}active{% endblock profileactive %}
 
 {% block body %}
+{{ permission|json_script:"auth" }}
 <main>
     <div class="list-container">
         <div class="list-header info-card">
@@ -22,7 +23,9 @@
             <a class="title text-decoration-none" href="{% url 'info' item.movie_id%}">{{item.title}}</a>
             <p class="status">{{item.status}}</p>
             <p class="score">{{item.score}}</p>
+            {% if permission %}
             <i class="material-icons edit-button">dehaze</i>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
