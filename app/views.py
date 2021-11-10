@@ -105,13 +105,13 @@ def update(request, id):
         # have to use filter bcoz get() method does not have attribute exists()
         item = List.objects.filter(user=request.user, movie_id=id)
         # to update existing listing
+        data = json.loads(request.body.decode("utf-8"))
         if item.exists():
             # .first() is used bcoz item is a queryset
-            form = AddListItemForm(request.POST, instance=item)
-            print(request.POST)
+            form = AddListItemForm(data, instance=item.first())
             # to add a new listing
         else:
-            form = AddListItemForm(request.POST)
+            form = AddListItemForm(data)
 
         # saving to database
         if form.is_valid():
@@ -119,7 +119,7 @@ def update(request, id):
             form.instance.movie_id = id
             form.save()
 
-    return redirect(request.META.get('HTTP_REFERER'))
+    return HttpResponse('')
 
 
 def profile(request, username):
@@ -163,9 +163,7 @@ def edit(request, user, id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-def remove(request, user, id):
-    item = List.objects.get(
-        user__username=user, movie_id=id)
-    print(item)
+def remove(request, id):
+    item = List.objects.get(user=request.user, movie_id=id)
     item.delete()
-    return redirect(request.META.get('HTTP_REFERER'))
+    return HttpResponse('')

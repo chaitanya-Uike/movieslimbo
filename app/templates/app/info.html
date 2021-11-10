@@ -4,6 +4,7 @@
 
 {% block title %}{{response.original_title}}{% endblock title %}
 {% block style %}{% static 'css/info.css' %}{% endblock style %}
+{% block style2 %}{% static 'css/edit.css' %}{% endblock style2 %}
 {% load static %}
 
 {% block body %}
@@ -49,6 +50,20 @@
             </div>
         </div>
     </div>
+
 </main>
 
+{{ initial |json_script:'data' }}
+{{ response.id |json_script:'id' }}
+
+<div class="close-edit-container"></div>
+<div class="edit-container">
+    <img src="https://image.tmdb.org/t/p/w1280/{{response.backdrop_path}}" class="edit-container-backdrop"></img>
+    <div class="form-container">
+        <h4>{{response.title}}</h4>
+        {% include 'app/form.html' %}
+    </div>
+</div>
+
+<script src="{% static 'js/edit.js' %}"></script>
 {% endblock body %}

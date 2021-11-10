@@ -1,28 +1,32 @@
-<form id="edit-form" method="post">
+<form id="edit-form" autocomplete="off">
     {% csrf_token %}
-    <p><label for="id_status">Status:</label>
-        <select name="status" required id="id_status">
-            <option value="" selected></option>
-            <option value="Watching">Watching</option>
-            <option value="Plan to watch">Plan to watch</option>
-            <option value="Completed">Completed</option>
-            <option value="Rewatching">Rewatching</option>
-            <option value="On hold">On hold</option>
-            <option value="Dropped">Dropped</option>
-        </select>
-    </p>
-    <p><label for="id_score">Score:</label> <select name="score" id="id_score">
-            <option value="" selected></option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-        </select></p>
-    <button type="submit" class="btn btn-success">save</button>
+    <div class="data-fields">
+        <p><label for="id_status">Status:</label>
+            <select class="form-control" name="status" required id="id_status">
+                <option value="" selected></option>
+                <option value="Watching">Watching</option>
+                <option value="Plan to watch">Plan to watch</option>
+                <option value="Completed">Completed</option>
+                <option value="Rewatching">Rewatching</option>
+                <option value="On hold">On hold</option>
+                <option value="Dropped">Dropped</option>
+            </select>
+        </p>
+        <p><label for="id_score" class="mx-5">Score:</label> <select class="form-control mx-5" name="score"
+                id="id_score">
+                <option value="" selected></option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select></p>
+    </div>
+    <button id="save-btn" type="submit" class="btn">save</button>
 </form>
+<button id="delete-btn" class="btn">delete</button>
