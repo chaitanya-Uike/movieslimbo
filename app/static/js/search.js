@@ -157,7 +157,9 @@ searchButton.addEventListener("click", event => {
     }
     else {
         searchBar.style.display = "none"
-        document.getElementById("close-search-container").style.display = "none"
+        closeSearchContainer.style.display = "none"
+        resultContainer.style.display = "none"
+        userResultContainer.style.display = "none"
         searchBar.value = ""
         searchBarActive = false
         searchButton.classList.remove("active")
