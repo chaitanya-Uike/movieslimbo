@@ -1,30 +1,49 @@
 {% extends 'app/main.html' %}
 
-{% block title %}{{result.title}}{% endblock title %}
+{% load static %}
 
+{% block title %}{{response.original_title}}{% endblock title %}
+{% block style %}{% static 'css/info.css' %}{% endblock style %}
 {% load static %}
 
 {% block body %}
-<img src="https://image.tmdb.org/t/p/w1280/{{result.backdrop_path}}" style="width:100%;" alt="backdrop">
-<h1>{{result.title}}</h1>
-<img src="https://image.tmdb.org/t/p/w185/{{result.poster_path}}" alt="poster">
-<p>{{result.overview}}</p>
-<p>Tagline : {{result.tagline}}</p>
-{% for genre in result.genres %}
-<div class="genre-container btn btn-sm btn-success m-2">
-    {{genre.name}}
-</div>
-{% endfor %}
-<p>Status : {{result.status}}</p>
-<p>Release Date : {{result.release_date}}</p>
-<p>Runtime : {{result.runtime}} min</p>
+<main>
+    <img src="https://image.tmdb.org/t/p/w1280/{{response.backdrop_path}}" class="backdrop-img">
+    <div class="side-panel">
+        <img src="https://image.tmdb.org/t/p/w500/{{response.poster_path}}" class="poster"></img>
+        <div class="edit-button">Add to list</div>
+    </div>
+    <div class="info-container">
+        <div class="overview-container">
+            <h3 class="title">{{response.title}}</h3>
+            <h5 class="tagline">{{response.tagline}}</h5>
+            <p class="overview">{{response.overview}}</p>
+        </div>
+        <div class="tags-container">
+            {% for genre in response.genres %}
+            <div class="tag">{{genre.name}}</div>
+            {% endfor %}
 
-<form action="{% url 'update' result.id %}" method="post" id="info-update-form" movie_id="{{result.id}}">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" class="btn btn-info m-2">Save</button>
-</form>
-
-<!-- <script src="{% static 'js/info.js' %}"></script> -->
+        </div>
+        <div class="extra-info-container">
+            <div class="extra-info">
+                <h6>Status</h6>
+                <p>{{response.status}}</p>
+            </div>
+            <div class="extra-info">
+                <h6>Release date</h6>
+                <p>{{response.release_date}}</p>
+            </div>
+            <div class="extra-info">
+                <h6>Popularity</h6>
+                <p>{{response.popularity}}</p>
+            </div>
+            <div class="extra-info">
+                <h6>runtime</h6>
+                <p>{{response.runtime}}</p>
+            </div>
+        </div>
+    </div>
+</main>
 
 {% endblock body %}

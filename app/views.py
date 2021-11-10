@@ -85,9 +85,7 @@ def search(request):
 def info(request, id):
 
     # get movie data through API
-    response = requests.get(
-        f'https://api.themoviedb.org/3/movie/{id}?api_key=09dbf57fe94efeab48abeb2a2e2d1ca5&language=en-US')
-    result = response.json()
+    response = getMovieInfo(id)
 
     form = AddListItemForm()
 
@@ -96,10 +94,11 @@ def info(request, id):
 
     # if the item already exists in database display its values
     if item.exists():
+        # .first used bcoz filter returns a queryset
         form.initial = {'status': item.first().status,
                         'score': item.first().score}
 
-    context = {'result': result, 'form': form}
+    context = {'response': response, 'form': form}
     return render(request, 'app/info.html', context)
 
 

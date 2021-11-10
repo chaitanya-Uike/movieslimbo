@@ -25,12 +25,12 @@
 #result-container{
     display: none;
     z-index: 2;
-    position: relative;
+    position: absolute;
     min-width: 350px;
     left: 50%;
-    top:70px;
-    -webkit-transform: translate(-50%, 0%);
-    transform: translate(-50%, 0%);
+    top: 120px;
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
     padding: 10px;
     width: 60%;
     background-color: white;
@@ -69,7 +69,7 @@
 }
 
 .result-card:hover{
-    background-color: lightskyblue;
+    background-color: #79CAF4;
 }
 
 .img{
