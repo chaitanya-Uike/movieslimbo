@@ -37,12 +37,12 @@ body{
 
 .info-card{
     display: grid;
-    grid-template-columns: 1fr 4fr 1.5fr 1fr 0.5fr;
-    grid-template-areas: "img title status score edit";
+    grid-template-columns: 1fr 4fr 1.2fr 1.5fr 1fr 0.5fr;
+    grid-template-areas: "img title type status score edit";
     grid-gap:5px;
     align-items: center;
     background-color: white;
-    width: 85%;
+    width: 90%;
     margin: 5px 0px;
     padding: 10px;
     border-radius: 5px;
@@ -54,6 +54,11 @@ body{
 
 .title{
     grid-area: title;
+    margin: 0;
+}
+
+.type{
+    grid-area: type;
     margin: 0;
 }
 

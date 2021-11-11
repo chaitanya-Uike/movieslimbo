@@ -4,7 +4,11 @@
 <div class="edit-container">
     <img src="https://image.tmdb.org/t/p/w1280/{{response.backdrop_path}}" class="edit-container-backdrop"></img>
     <div class="form-container">
+    {% if type == "Movie" %}
         <h4>{{response.title}}</h4>
+        {% else %}
+        <h4>{{response.name}}</h4>
+    {% endif %}
         {% include 'app/form.html' %}
     </div>
 </div>

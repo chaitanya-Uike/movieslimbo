@@ -65,6 +65,12 @@ def getMovieInfo(id):
     return response.json()
 
 
+def getTVInfo(id):
+    response = requests.get(
+        f'https://api.themoviedb.org/3/tv/{id}?api_key=09dbf57fe94efeab48abeb2a2e2d1ca5&language=en-US')
+    return response.json()
+
+
 def searchMovieByKeyword(keyword):
     response = requests.get(
         f'https://api.themoviedb.org/3/search/movie?api_key=09dbf57fe94efeab48abeb2a2e2d1ca5&language=en-US&query={keyword}&page=1&include_adult=false')
@@ -114,11 +120,11 @@ def searchUsers(request):
             return JsonResponse({'results': []})
 
 
-def info(request, id):
+def movieInfo(request, id):
 
     # get movie data through API
     response = getMovieInfo(id)
-    context = {'response': response}
+    context = {'response': response, "type": "Movie"}
 
     # have to use filter bcoz get() method does not have attribute exists()
     item = List.objects.filter(user=request.user, movie_id=id)
@@ -132,7 +138,25 @@ def info(request, id):
     return render(request, 'app/info.html', context)
 
 
-def update(request, id):
+def TVinfo(request, id):
+
+    # get Tv show data through API
+    response = getTVInfo(id)
+    context = {'response': response, 'type': "TV"}
+
+    # have to use filter bcoz get() method does not have attribute exists()
+    item = List.objects.filter(user=request.user, movie_id=id)
+
+    # if the item already exists in database display its values
+    if item.exists():
+        # .first used bcoz filter returns a queryset
+        context['initial'] = {'status': item.first().status,
+                              'score': item.first().score}
+
+    return render(request, 'app/info.html', context)
+
+
+def update(request, id, type):
     if request.method == "POST":
         # have to use filter bcoz get() method does not have attribute exists()
         item = List.objects.filter(user=request.user, movie_id=id)
@@ -149,6 +173,7 @@ def update(request, id):
         if form.is_valid():
             form.instance.user = request.user
             form.instance.movie_id = id
+            form.instance.type = type
             form.save()
 
     return HttpResponse('')
@@ -163,8 +188,9 @@ def profile(request, username):
     context = {'username': username, 'permission': permission}
 
     class Data:
-        def __init__(self, id, title, status, score, img, backdrop):
+        def __init__(self, id, type, title, status, score, img, backdrop):
             self.movie_id = id
+            self.type = type
             self.title = title
             self.status = status
             self.score = score
@@ -176,24 +202,18 @@ def profile(request, username):
     if itemList.exists():
         data = []
         for item in itemList:
-            response = requests.get(
-                f'https://api.themoviedb.org/3/movie/{item.movie_id}?api_key=09dbf57fe94efeab48abeb2a2e2d1ca5&language=en-US')
-
-            data.append(Data(item.movie_id, response.json(
-            )["title"], item.status, item.score, response.json()["poster_path"], response.json()["backdrop_path"],).__dict__)
+            print(item.type)
+            if item.type == "Movie":
+                response = getMovieInfo(item.movie_id)
+                data.append(Data(item.movie_id, item.type, response["title"], item.status,
+                            item.score, response["poster_path"], response["backdrop_path"],).__dict__)
+            else:
+                response = getTVInfo(item.movie_id)
+                data.append(Data(item.movie_id, item.type, response["name"], item.status,
+                            item.score, response["poster_path"], response["backdrop_path"],).__dict__)
 
         context['data'] = data
     return render(request, 'app/profile.html', context)
-
-
-def edit(request, user, id):
-    if request.method == "POST":
-        item = List.objects.get(
-            user__username=user, movie_id=id)
-        form = AddListItemForm(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
-    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def remove(request, id):

@@ -17,6 +17,7 @@
     <div class="list-container">
         <div class="list-header info-card">
             <h6 class="title">Title</h6>
+            <h6 class="type">Type</h6>
             <h6 class="status">Status</h6>
             <h6 class="score">Score</h6>
         </div>
@@ -24,10 +25,15 @@
             <div class="extra-info-container">No items present in the list</div>
         {% endif %}
         {% for item in data %}
-        <div class="info-card" id="{{item.movie_id}}" status="{{item.status}}" score="{{item.score}}"
+        <div class="info-card" id="{{item.movie_id}}"  type="{{item.type}}" status="{{item.status}}" score="{{item.score}}"
             title="{{item.title}}" img="{{item.img}}" backdrop="{{item.backdrop}}">
             <img class="card-img" src="https://image.tmdb.org/t/p/w92/{{item.img}}" alt="">
-            <a class="title text-decoration-none" href="{% url 'info' item.movie_id%}">{{item.title}}</a>
+            {% if item.type == "Movie" %}
+            <a class="title text-decoration-none" href="{% url 'movieInfo' item.movie_id%}">{{item.title}}</a>
+            {% else %}
+            <a class="title text-decoration-none" href="{% url 'TVinfo' item.movie_id%}">{{item.title}}</a>
+            {% endif %}
+            <p class="type">{{item.type}}</p>
             <p class="status">{{item.status}}</p>
             <p class="score">{{item.score}}</p>
             {% if permission %}

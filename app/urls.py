@@ -10,8 +10,9 @@ urlpatterns = [
     path('searchMovies/', views.searchMovies, name='searchMovies'),
     path('searchTV/', views.searchTV, name='searchTV'),
     path('searchUsers/', views.searchUsers, name='searchUsers'),
-    path('info/<str:id>/', views.info, name='info'),
-    path('update/<str:id>/', views.update, name="update"),
+    path('info/movie/<str:id>/', views.movieInfo, name='movieInfo'),
+    path('info/TV/<str:id>/', views.TVinfo, name='TVinfo'),
+    path('update/<str:id>/<str:type>/', views.update, name="update"),
     path('remove/<str:id>/', views.remove, name="remove"),
     path('profile/<str:username>/', views.profile, name="profile"),
 ]

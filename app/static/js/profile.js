@@ -11,6 +11,7 @@ if (permission) {
         element.addEventListener("click", event => {
             let card = event.target.parentElement
             id = card.getAttribute("id")
+            type = card.getAttribute("type")
             backdrop = card.getAttribute("backdrop")
             title = card.getAttribute("title")
 
@@ -33,7 +34,7 @@ if (permission) {
     })
 
     async function updateData(csrftoken, status, score) {
-        const response = await fetch(`/update/${id}/`, {
+        const response = await fetch(`/update/${id}/${type}/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

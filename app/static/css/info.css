@@ -13,7 +13,7 @@ main{
     grid-area: backdrop;
     object-fit: cover;
     width: 100%;
-    height: 250px;
+    height: 275px;
     background-color: lightblue;
 }
 
@@ -97,6 +97,7 @@ main{
     padding:  0 5px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     margin-top: 20px;
 }
 

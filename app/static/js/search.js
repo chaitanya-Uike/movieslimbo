@@ -44,7 +44,7 @@ async function searchMovies(csrftoken, keyword) {
             }
             else {
                 movieResultContainer.innerHTML += `
-            <a href="/info/${result.id}" class="result-card">
+            <a href="/info/movie/${result.id}" class="result-card">
                 <img class="img" src="https://image.tmdb.org/t/p/w92/${result.poster_path}" alt="">
                 <h5>${result.title}</h5>
                 <p>${result.release_date}</p>
@@ -84,7 +84,7 @@ async function searchTV(csrftoken, keyword) {
         results.slice(0, 5).forEach(result => {
             if (result.poster_path == null) {
                 TVResultContainer.innerHTML += `
-                <a href="/info/${result.id}" class="result-card">
+                <a href="/info/TV/${result.id}" class="result-card">
                     <div class="img"><i class="material-icons">blur_on</i></div>
                     <h5>${result.name}</h5>
                     <p>${result.first_air_date}</p>
@@ -93,7 +93,7 @@ async function searchTV(csrftoken, keyword) {
             }
             else {
                 TVResultContainer.innerHTML += `
-            <a href="/info/${result.id}" class="result-card">
+            <a href="/info/TV/${result.id}" class="result-card">
                 <img class="img" src="https://image.tmdb.org/t/p/w92/${result.poster_path}" alt="">
                 <h5>${result.name}</h5>
                 <p>${result.first_air_date}</p>

@@ -17,9 +17,12 @@ class List(models.Model):
         ('Dropped', 'Dropped'),
     )
 
+    TYPE = (('Movie', 'Movie'), ('TV', 'TV'),)
+
     SCORE = ((str(x), str(x)) for x in range(1, 11))
 
     user = models.ForeignKey(User, on_delete=CASCADE)
+    type = models.CharField(max_length=5, choices=TYPE, blank=True)
     movie_id = models.CharField(max_length=20)
     status = models.CharField(max_length=20, choices=STATUS)
     score = models.CharField(max_length=2, choices=SCORE, blank=True)

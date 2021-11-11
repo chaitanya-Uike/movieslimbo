@@ -6,6 +6,7 @@ const form = document.querySelector("#edit-form")
 
 const data = JSON.parse(document.getElementById('data').textContent)
 const id = JSON.parse(document.getElementById('id').textContent)
+const type = JSON.parse(document.getElementById('itemType').textContent)
 
 editButton.addEventListener("click", event => {
     editContainer.style.display = "block"
@@ -24,7 +25,7 @@ if (data != "") {
 }
 
 async function updateData(csrftoken, status, score) {
-    const response = await fetch(`/update/${id}/`, {
+    const response = await fetch(`/update/${id}/${type}/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -51,8 +52,6 @@ form.addEventListener("submit", event => {
     const csrftoken = event.target['csrfmiddlewaretoken'].value
     const status = event.target['status'].value
     const score = event.target['score'].value
-
-    console.log(csrftoken);
 
     updateData(csrftoken, status, score)
 })
