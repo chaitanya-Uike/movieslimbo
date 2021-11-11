@@ -10,12 +10,19 @@
 {% block body %}
 {{ permission|json_script:"auth" }}
 <main>
+    <div class="profile-container">
+        <div class="profile-picture"></div>
+        <h5 class="username text-center">{{username}}</h5>
+    </div>
     <div class="list-container">
         <div class="list-header info-card">
             <h6 class="title">Title</h6>
             <h6 class="status">Status</h6>
             <h6 class="score">Score</h6>
         </div>
+        {% if data|length == 0 %}
+            <div class="extra-info-container">No items present in the list</div>
+        {% endif %}
         {% for item in data %}
         <div class="info-card" id="{{item.movie_id}}" status="{{item.status}}" score="{{item.score}}"
             title="{{item.title}}" img="{{item.img}}" backdrop="{{item.backdrop}}">

@@ -1,6 +1,7 @@
 const searchBar = document.getElementById("search-bar")
 const searchForm = document.getElementById("search-form")
-const resultContainer = document.getElementById("result-container")
+const movieResultContainer = document.getElementById("movie-result-container")
+const TVResultContainer = document.getElementById("TV-result-container")
 const userResultContainer = document.getElementById("user-result-container")
 const searchButton = document.getElementById("search-button")
 const resultDisplayContainer = document.querySelector(".result-display-container")
@@ -24,17 +25,17 @@ async function searchMovies(csrftoken, keyword) {
         const results = data.results
 
         if (results.length > 0)
-            resultContainer.style.display = "block"
+            movieResultContainer.style.display = "block"
         else
-            resultContainer.style.display = "none"
+            movieResultContainer.style.display = "none"
 
-        resultContainer.innerHTML = ''
+        movieResultContainer.innerHTML = '<p class="mx-2">Movies</p>'
 
         //show only the first five results
         results.slice(0, 5).forEach(result => {
             if (result.poster_path == null) {
-                resultContainer.innerHTML += `
-                <a href="/info/${result.id}" class="result-card text-decoration-none">
+                movieResultContainer.innerHTML += `
+                <a href="/info/${result.id}" class="result-card">
                     <div class="img"><i class="material-icons">blur_on</i></div>
                     <h5>${result.title}</h5>
                     <p>${result.release_date}</p>
@@ -42,11 +43,60 @@ async function searchMovies(csrftoken, keyword) {
                 `
             }
             else {
-                resultContainer.innerHTML += `
+                movieResultContainer.innerHTML += `
             <a href="/info/${result.id}" class="result-card">
                 <img class="img" src="https://image.tmdb.org/t/p/w92/${result.poster_path}" alt="">
                 <h5>${result.title}</h5>
                 <p>${result.release_date}</p>
+            </a>
+            `}
+        })
+    }
+    else {
+        console.log("some error occured!")
+    }
+}
+
+async function searchTV(csrftoken, keyword) {
+    const response = await fetch('/searchTV/', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify({
+            "keyword": keyword,
+        })
+    })
+
+    if (response.ok) {
+        const data = await response.json()
+        const results = data.results
+
+        if (results.length > 0)
+            TVResultContainer.style.display = "block"
+        else
+            TVResultContainer.style.display = "none"
+
+        TVResultContainer.innerHTML = '<p class="mx-2">TV shows</p>'
+
+        //show only the first five results
+        results.slice(0, 5).forEach(result => {
+            if (result.poster_path == null) {
+                TVResultContainer.innerHTML += `
+                <a href="/info/${result.id}" class="result-card">
+                    <div class="img"><i class="material-icons">blur_on</i></div>
+                    <h5>${result.name}</h5>
+                    <p>${result.first_air_date}</p>
+                </a>
+                `
+            }
+            else {
+                TVResultContainer.innerHTML += `
+            <a href="/info/${result.id}" class="result-card">
+                <img class="img" src="https://image.tmdb.org/t/p/w92/${result.poster_path}" alt="">
+                <h5>${result.name}</h5>
+                <p>${result.first_air_date}</p>
             </a>
             `}
         })
@@ -79,7 +129,7 @@ async function searchUsers(csrftoken, keyword) {
         else
             userResultContainer.style.display = "none"
 
-        userResultContainer.innerHTML = ''
+        userResultContainer.innerHTML = '<p class="mx-2">Users</p>'
 
         //show only the first five results
         results.slice(0, 5).forEach(result => {
@@ -100,7 +150,8 @@ async function searchUsers(csrftoken, keyword) {
 async function search(csrftoken, keyword) {
     const response = await Promise.all([
         searchMovies(csrftoken, keyword),
-        searchUsers(csrftoken, keyword)
+        searchTV(csrftoken, keyword),
+        searchUsers(csrftoken, keyword),
     ])
 }
 
@@ -123,7 +174,8 @@ let searchBarActive = false
 //to close the result container and clear searchbar 
 closeSearchContainer.addEventListener("click", event => {
     searchBar.style.display = "none"
-    resultContainer.style.display = "none"
+    movieResultContainer.style.display = "none"
+    TVResultContainer.style.display = "none"
     userResultContainer.style.display = "none"
     event.target.style.display = "none"
     searchBar.value = ""
@@ -134,7 +186,8 @@ closeSearchContainer.addEventListener("click", event => {
 resultDisplayContainer.addEventListener("click", event => {
     if (event.target != this) {
         searchBar.style.display = "none"
-        resultContainer.style.display = "none"
+        movieResultContainer.style.display = "none"
+        TVResultContainer.style.display = "none"
         userResultContainer.style.display = "none"
         closeSearchContainer.style.display = "none"
         searchBar.value = ""
@@ -158,7 +211,8 @@ searchButton.addEventListener("click", event => {
     else {
         searchBar.style.display = "none"
         closeSearchContainer.style.display = "none"
-        resultContainer.style.display = "none"
+        movieResultContainer.style.display = "none"
+        TVResultContainer.style.display = "none"
         userResultContainer.style.display = "none"
         searchBar.value = ""
         searchBarActive = false

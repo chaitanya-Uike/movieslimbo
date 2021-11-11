@@ -33,7 +33,18 @@
     z-index: 1;
 }
 
-#result-container{
+#movie-result-container{
+    display: none;
+    padding: 10px;
+    background-color: white;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px 4px rgba(0,0,0,0.10);
+    -webkit-box-shadow: 1px 1px 5px 4px rgba(0,0,0,0.10);
+    -moz-box-shadow: 1px 1px 5px 4px rgba(0,0,0,0.10);
+}
+
+#TV-result-container{
     display: none;
     padding: 10px;
     background-color: white;

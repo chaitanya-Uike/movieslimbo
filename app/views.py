@@ -65,9 +65,15 @@ def getMovieInfo(id):
     return response.json()
 
 
-def searchMovie(keyword):
+def searchMovieByKeyword(keyword):
     response = requests.get(
         f'https://api.themoviedb.org/3/search/movie?api_key=09dbf57fe94efeab48abeb2a2e2d1ca5&language=en-US&query={keyword}&page=1&include_adult=false')
+    return response.json()['results']
+
+
+def searchTVByKeyword(keyword):
+    response = requests.get(
+        f'https://api.themoviedb.org/3/search/tv?api_key=09dbf57fe94efeab48abeb2a2e2d1ca5&language=en-US&query={keyword}&page=1&include_adult=false')
     return response.json()['results']
 
 
@@ -75,7 +81,18 @@ def searchMovies(request):
     if request.method == "POST":
         keyword = json.loads(request.body.decode("utf-8"))['keyword']
         if(len(keyword) > 0):
-            results = searchMovie(keyword)
+            results = searchMovieByKeyword(keyword)
+
+            return JsonResponse({"results": results})
+        else:
+            return JsonResponse({'results': []})
+
+
+def searchTV(request):
+    if request.method == "POST":
+        keyword = json.loads(request.body.decode("utf-8"))['keyword']
+        if(len(keyword) > 0):
+            results = searchTVByKeyword(keyword)
 
             return JsonResponse({"results": results})
         else:
