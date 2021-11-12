@@ -15,4 +15,5 @@ urlpatterns = [
     path('update/<str:id>/<str:type>/', views.update, name="update"),
     path('remove/<str:id>/', views.remove, name="remove"),
     path('profile/<str:username>/', views.profile, name="profile"),
+    path('list/<str:username>/', views.list, name="list"),
 ]

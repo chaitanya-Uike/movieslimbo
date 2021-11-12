@@ -180,40 +180,34 @@ def update(request, id, type):
 
 
 def profile(request, username):
-    """ 
+    """
         to check if the user has permission to edit the list.
         same view is called when viewing our own or others profile, so permission variable is  created.
     """
     permission = username == request.user.username
     context = {'username': username, 'permission': permission}
 
-    class Data:
-        def __init__(self, id, type, title, status, score, img, backdrop):
-            self.movie_id = id
-            self.type = type
-            self.title = title
-            self.status = status
-            self.score = score
-            self.img = img
-            self.backdrop = backdrop
+    return render(request, 'app/profile.html', context)
 
-    # to access the field of parent model use __
-    itemList = List.objects.filter(user__username=username)
-    if itemList.exists():
-        data = []
-        for item in itemList:
-            print(item.type)
+
+def list(request, username):
+
+    list = List.objects.filter(user__username=username)
+
+    data = []
+
+    if list.exists():
+        for item in list:
             if item.type == "Movie":
                 response = getMovieInfo(item.movie_id)
-                data.append(Data(item.movie_id, item.type, response["title"], item.status,
-                            item.score, response["poster_path"], response["backdrop_path"],).__dict__)
+                data.append({"movie_id": item.movie_id, "type": item.type,
+                            "title": response.get('title'), "status": item.status, "score": item.score, "img": response.get('poster_path'), "backdrop": response.get('backdrop_path')})
             else:
                 response = getTVInfo(item.movie_id)
-                data.append(Data(item.movie_id, item.type, response["name"], item.status,
-                            item.score, response["poster_path"], response["backdrop_path"],).__dict__)
+                data.append({"movie_id": item.movie_id, "type": item.type,
+                             "title": response.get('name'), "status": item.status, "score": item.score, "img": response.get('poster_path'), "backdrop": response.get('backdrop_path')})
 
-        context['data'] = data
-    return render(request, 'app/profile.html', context)
+    return JsonResponse(data, safe=False)
 
 
 def remove(request, id):

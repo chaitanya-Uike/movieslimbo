@@ -12,9 +12,7 @@ class List(models.Model):
         ('Watching', 'Watching'),
         ('Plan to watch', 'Plan to watch'),
         ('Completed', 'Completed'),
-        ('Rewatching', 'Rewatching'),
         ('On hold', 'On hold'),
-        ('Dropped', 'Dropped'),
     )
 
     TYPE = (('Movie', 'Movie'), ('TV', 'TV'),)

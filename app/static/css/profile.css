@@ -1,14 +1,18 @@
 main{
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-areas: "profile list";
     padding: 10px;
-    align-items: baseline;
 }
 
 
 .profile-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 30vw;
     min-width: 225px;
-    max-width: 450px;
+    max-width: 350px;
     height: 500px;
     background-color: white;
     border-radius: 5px;
@@ -16,13 +20,33 @@ main{
     padding: 10px;
 }
 
+.profile-picture{
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    background-color: lightcyan;
+}
+
+.username{
+    margin: 10px;
+}
+
+.filter-container{
+    width: 90%;
+}
+
+#filter{
+    margin: 0;
+    color: gray;
+}
+
 
 
 .list-container{
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
