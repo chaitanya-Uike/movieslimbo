@@ -193,11 +193,23 @@ def profile(request, username):
 def list(request, username):
 
     list = List.objects.filter(user__username=username)
+    distribution = {'total': len(list), 'Watching': 0,
+                    'Plan to watch': 0, 'Completed': 0, 'On hold': 0}
 
     data = []
 
     if list.exists():
         for item in list:
+
+            if item.status == 'Watching':
+                distribution['Watching'] += 1
+            elif item.status == 'Plan to watch':
+                distribution['Plan to watch'] += 1
+            elif item.status == 'Completed':
+                distribution['Completed'] += 1
+            elif item.status == 'On hold':
+                distribution['On hold'] += 1
+
             if item.type == "Movie":
                 response = getMovieInfo(item.movie_id)
                 data.append({"movie_id": item.movie_id, "type": item.type,
@@ -207,7 +219,9 @@ def list(request, username):
                 data.append({"movie_id": item.movie_id, "type": item.type,
                              "title": response.get('name'), "status": item.status, "score": item.score, "img": response.get('poster_path'), "backdrop": response.get('backdrop_path')})
 
-    return JsonResponse(data, safe=False)
+    query = {"data": data, "distribution": distribution}
+
+    return JsonResponse(query)
 
 
 def remove(request, id):

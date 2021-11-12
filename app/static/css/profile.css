@@ -13,7 +13,7 @@ main{
     width: 30vw;
     min-width: 225px;
     max-width: 350px;
-    height: 500px;
+    height: 550px;
     background-color: white;
     border-radius: 5px;
     margin-left: 20px;
@@ -35,7 +35,24 @@ main{
     width: 90%;
 }
 
-#filter{
+.stat-container{
+    margin-top: 10px;
+    width: 90%;
+}
+
+.stat-container p{
+    margin: 0;
+    font-size: 12px;
+}
+
+
+.stat-card{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 5px;
+}
+
+.info-title{
     margin: 0;
     color: gray;
 }

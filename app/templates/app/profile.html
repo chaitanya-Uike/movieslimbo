@@ -15,8 +15,8 @@
         <div class="profile-picture"></div>
         <h5 class="username text-center">{{username}}</h5>
         <div class="filter-container">
-            <p id="filter">Filters</p>
-            <label for="filter_status">Status</label>
+            <h5 class="info-title">Filters</h5>
+            <label for="filter_status" style="font-size: 12px;">Status</label>
             <select class="form-control" name="status" required id="filter_status">
                 <option value="All" selected>All</option>
                 <option value="Watching">Watching</option>
@@ -25,11 +25,29 @@
                 <option value="On hold">On hold</option>
             </select>
             <br>
-            <label for="filter_sort">Sort by</label>
+            <label for="filter_sort" style="font-size: 12px;">Sort by</label>
             <select class="form-control" name="status" required id="filter_sort">
                 <option value="score">Score</option>
                 <option value="date_added" selected>Date Added</option>
             </select>
+        </div>
+        <div class="stat-container">
+            <h5 class="info-title mt-4">Stats</h5>
+            <div class="stat-card total">
+                <p class="heading">Total entries</p>
+            </div>
+            <div class="stat-card comp">
+                <p class="heading">Completed</p>
+            </div>
+            <div class="stat-card watch">
+                <p class="heading">watching</p>
+            </div>
+            <div class="stat-card ptw">
+                <p class="heading">Plan to watch</p>
+            </div>
+            <div class="stat-card oh">
+                <p class="heading">On hold</p>
+            </div>
         </div>
     </div>
     <div class="list-container">
