@@ -1,3 +1,8 @@
+const editContainer = document.querySelector(".edit-container")
+const closeEditContainer = document.querySelector(".close-edit-container")
+const form = document.querySelector("#edit-form")
+let favoriteBtn = document.querySelector("#id_favorite")
+
 async function fetchList(username) {
     const response = await fetch(`/list/${username}/`)
     if (response.ok) {
@@ -14,6 +19,113 @@ const permission = JSON.parse(document.getElementById('auth').textContent)
 const username = JSON.parse(document.getElementById('username').textContent)
 
 
+// Event listeners
+
+document.getElementById("delete-btn").addEventListener("click", event => {
+    removeData()
+})
+
+function favoriteBtnToggle() {
+    if (favoriteBtn.getAttribute("selected") == "true") {
+        favoriteBtn.setAttribute("selected", "false")
+        favoriteBtn.style.color = ""
+    }
+    else {
+        favoriteBtn.style.color = "#EC294B"
+        favoriteBtn.setAttribute("selected", "true")
+    }
+    console.log(favoriteBtn.getAttribute("selected"))
+}
+
+favoriteBtn.addEventListener("click", favoriteBtnToggle)
+
+//event delegation
+let id
+function editButtonClicked(event) {
+    let card = event.target.parentElement
+    id = card.getAttribute("id")
+    data = JSON.parse(document.getElementById(`data-${id}`).textContent)
+    type = data.type
+    backdrop = data.backdrop
+    title = data.title
+
+    editContainer.style.display = "block"
+    closeEditContainer.style.display = "block"
+
+    document.querySelector(".edit-container-backdrop").setAttribute("src", `https://image.tmdb.org/t/p/w1280/${backdrop}`)
+    document.querySelector("#edit-from-title").innerHTML = title
+
+    // showing the initial values
+    document.getElementById("id_status").value = data.status
+    document.getElementById("id_score").value = data.score
+    if (data.favorite == true) {
+        favoriteBtn.style.color = "#EC294B"
+        favoriteBtn.setAttribute("selected", "true")
+    }
+    else {
+        favoriteBtn.style.color = ""
+        favoriteBtn.setAttribute("selected", "false")
+    }
+    document.getElementById("delete-btn").style.display = "block"
+}
+
+async function updateData(csrftoken, status, score, favorite) {
+    const response = await fetch(`/update/${id}/${type}/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify({
+            "status": status,
+            "score": score,
+            "favorite": favorite,
+        })
+    })
+
+    if (response.ok) {
+        console.log("saved successfully!")
+        location.reload()
+    }
+    else {
+        console.log("some error occured!")
+    }
+}
+
+async function removeData() {
+    const response = await fetch(`/remove/${id}/`)
+    if (response.ok) {
+        location.reload()
+    }
+}
+
+listContainer.addEventListener("click", event => {
+    if (event.target && event.target.matches("i.edit-button")) {
+        editButtonClicked(event)
+    }
+})
+
+
+closeEditContainer.addEventListener("click", event => {
+    editContainer.style.display = "none"
+    event.target.style.display = "none"
+})
+
+form.addEventListener("submit", event => {
+    event.preventDefault()
+
+    const csrftoken = event.target['csrfmiddlewaretoken'].value
+    const status = event.target['status'].value
+    const score = event.target['score'].value
+    let favorite = false
+    if (favoriteBtn.getAttribute("selected") == "true")
+        favorite = true
+
+    updateData(csrftoken, status, score, favorite)
+})
+
+
+
 function populateList(data, status, sort) {
     listContainer.innerHTML = `        
     <div class="list-header info-card">
@@ -27,8 +139,7 @@ function populateList(data, status, sort) {
         data.sort((a, b) => b.score - a.score)
 
     for (let i = 0; i < data.length; i++) {
-
-        if (status != "All" && data[i].status != status)
+        if ((status != "Favorite" || data[i].favorite != true) && status != "All" && data[i].status != status)
             continue
 
         let infoCard = document.createElement("div")
@@ -62,90 +173,6 @@ function populateList(data, status, sort) {
 
     if (listContainer.childElementCount == 1) {
         listContainer.innerHTML += '<div class="extra-info-container">No items present in the list</div>'
-    }
-
-
-    //handling the edit button
-    if (permission) {
-        const editContainer = document.querySelector(".edit-container")
-        const closeEditContainer = document.querySelector(".close-edit-container")
-        const form = document.querySelector("#edit-form")
-
-        let id;
-
-        function editButtonClicked(event) {
-            let card = event.target.parentElement
-            id = card.getAttribute("id")
-            data = JSON.parse(document.getElementById(`data-${id}`).textContent)
-            type = data.type
-            backdrop = data.backdrop
-            title = data.title
-
-            editContainer.style.display = "block"
-            closeEditContainer.style.display = "block"
-
-            document.querySelector(".edit-container-backdrop").setAttribute("src", `https://image.tmdb.org/t/p/w1280/${backdrop}`)
-            document.querySelector("#edit-from-title").innerHTML = title
-
-            document.getElementById("id_status").value = data.status
-            document.getElementById("id_score").value = data.score
-            document.getElementById("delete-btn").style.display = "block"
-        }
-
-        listContainer.addEventListener("click", event => {
-            if (event.target && event.target.matches("i.edit-button")) {
-                editButtonClicked(event)
-            }
-        })
-
-
-        closeEditContainer.addEventListener("click", event => {
-            editContainer.style.display = "none"
-            event.target.style.display = "none"
-        })
-
-        async function updateData(csrftoken, status, score) {
-            const response = await fetch(`/update/${id}/${type}/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrftoken,
-                },
-                body: JSON.stringify({
-                    "status": status,
-                    "score": score,
-                })
-            })
-
-            if (response.ok) {
-                console.log("saved successfully!")
-                location.reload()
-            }
-            else {
-                console.log("some error occured!")
-            }
-        }
-
-        form.addEventListener("submit", event => {
-            event.preventDefault()
-
-            const csrftoken = event.target['csrfmiddlewaretoken'].value
-            const status = event.target['status'].value
-            const score = event.target['score'].value
-
-            updateData(csrftoken, status, score)
-        })
-
-        async function removeData() {
-            const response = await fetch(`/remove/${id}/`)
-            if (response.ok) {
-                location.reload()
-            }
-        }
-
-        document.getElementById("delete-btn").addEventListener("click", event => {
-            removeData()
-        })
     }
 }
 
