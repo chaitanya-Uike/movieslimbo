@@ -42,6 +42,7 @@
 
 .data-fields{
     display: flex;
+    align-items: center;
 }
 
 .buttons{
@@ -54,6 +55,13 @@
 
 #id_status{
     width: 150px;
+}
+
+#id_favorite{
+    margin-top: 25px;
+    font-size: 40px;
+    color: #DDE1E5;
+    cursor: pointer;
 }
 
 #save-btn{

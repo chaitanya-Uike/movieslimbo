@@ -1,6 +1,7 @@
 const editButton = document.querySelector(".edit-button")
 const editContainer = document.querySelector(".edit-container")
 const closeEditContainer = document.querySelector(".close-edit-container")
+const favoriteButton = document.getElementById("id_favorite")
 const form = document.querySelector("#edit-form")
 
 
@@ -21,10 +22,14 @@ closeEditContainer.addEventListener("click", event => {
 if (data != "") {
     document.getElementById("id_status").value = data.status
     document.getElementById("id_score").value = data.score
+    if (data.favorite) {
+        favoriteButton.style.color = "#EC294B"
+        favoriteButton.setAttribute("selected", "true")
+    }
     document.getElementById("delete-btn").style.display = "block"
 }
 
-async function updateData(csrftoken, status, score) {
+async function updateData(csrftoken, status, score, favorite) {
     const response = await fetch(`/update/${id}/${type}/`, {
         method: "POST",
         headers: {
@@ -34,6 +39,7 @@ async function updateData(csrftoken, status, score) {
         body: JSON.stringify({
             "status": status,
             "score": score,
+            "favorite": favorite,
         })
     })
 
@@ -46,14 +52,30 @@ async function updateData(csrftoken, status, score) {
     }
 }
 
+favoriteButton.addEventListener("click", event => {
+    if (event.target.getAttribute("selected") == "false") {
+        event.target.setAttribute("selected", "true")
+        event.target.style.color = "#EC294B"
+    }
+
+    else {
+        event.target.setAttribute("selected", "false")
+        event.target.style.color = ""
+    }
+})
+
+
 form.addEventListener("submit", event => {
     event.preventDefault()
 
     const csrftoken = event.target['csrfmiddlewaretoken'].value
     const status = event.target['status'].value
     const score = event.target['score'].value
+    let favorite = false
+    if (favoriteButton.getAttribute("selected") == "true")
+        favorite = true
 
-    updateData(csrftoken, status, score)
+    updateData(csrftoken, status, score, favorite)
 })
 
 async function removeData() {

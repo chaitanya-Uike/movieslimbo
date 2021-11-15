@@ -133,7 +133,8 @@ def movieInfo(request, id):
     if item.exists():
         # .first used bcoz filter returns a queryset
         context['initial'] = {'status': item.first().status,
-                              'score': item.first().score}
+                              'score': item.first().score,
+                              'favorite': item.first().favorite, }
 
     return render(request, 'app/info.html', context)
 
@@ -151,7 +152,8 @@ def TVinfo(request, id):
     if item.exists():
         # .first used bcoz filter returns a queryset
         context['initial'] = {'status': item.first().status,
-                              'score': item.first().score}
+                              'score': item.first().score,
+                              'favorite': item.first().favorite, }
 
     return render(request, 'app/info.html', context)
 
@@ -162,6 +164,7 @@ def update(request, id, type):
         item = List.objects.filter(user=request.user, movie_id=id)
         # to update existing listing
         data = json.loads(request.body.decode("utf-8"))
+        print(data)
         if item.exists():
             # .first() is used bcoz item is a queryset
             form = AddListItemForm(data, instance=item.first())
@@ -174,6 +177,7 @@ def update(request, id, type):
             form.instance.user = request.user
             form.instance.movie_id = id
             form.instance.type = type
+            form.instance.favorite = data.get("favorite")
             form.save()
 
     return HttpResponse('')
@@ -213,11 +217,11 @@ def list(request, username):
             if item.type == "Movie":
                 response = getMovieInfo(item.movie_id)
                 data.append({"movie_id": item.movie_id, "type": item.type,
-                            "title": response.get('title'), "status": item.status, "score": item.score, "img": response.get('poster_path'), "backdrop": response.get('backdrop_path')})
+                            "title": response.get('title'), "status": item.status, "score": item.score, "img": response.get('poster_path'), "backdrop": response.get('backdrop_path'), "favorite": item.favorite, })
             else:
                 response = getTVInfo(item.movie_id)
                 data.append({"movie_id": item.movie_id, "type": item.type,
-                             "title": response.get('name'), "status": item.status, "score": item.score, "img": response.get('poster_path'), "backdrop": response.get('backdrop_path')})
+                             "title": response.get('name'), "status": item.status, "score": item.score, "img": response.get('poster_path'), "backdrop": response.get('backdrop_path'), "favorite": item.favorite, })
 
     query = {"data": data, "distribution": distribution}
 

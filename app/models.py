@@ -24,6 +24,7 @@ class List(models.Model):
     movie_id = models.CharField(max_length=20)
     status = models.CharField(max_length=20, choices=STATUS)
     score = models.CharField(max_length=2, choices=SCORE, blank=True)
+    favorite = models.BooleanField(default=False)
     date_added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

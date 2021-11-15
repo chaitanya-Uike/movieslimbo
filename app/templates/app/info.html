@@ -2,9 +2,16 @@
 
 {% load static %}
 
-{% block title %}{{response.original_title}}{% endblock title %}
 {% block style %}{% static 'css/info.css' %}{% endblock style %}
 {% block style2 %}{% static 'css/edit.css' %}{% endblock style2 %}
+{% block title %}
+    {% if type == "TV" %}
+        {{response.name}}
+        {% else %}
+        {{response.title}}
+    {% endif %}
+{% endblock title %}
+
 {% load static %}
 
 {% block body %}
