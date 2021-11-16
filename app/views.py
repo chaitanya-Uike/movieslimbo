@@ -1,9 +1,8 @@
-from typing import Text
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
+from account.models import Account
 import requests
 import json
 
@@ -110,7 +109,7 @@ def searchUsers(request):
         keyword = json.loads(request.body.decode("utf-8"))['keyword']
         results = []
         if(len(keyword) > 0):
-            data = User.objects.filter(
+            data = Account.objects.filter(
                 username__icontains=keyword, is_staff=False).exclude(username=request.user.username)
             for result in data:
                 results.append({"username": result.username})

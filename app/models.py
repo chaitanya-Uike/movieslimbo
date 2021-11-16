@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.enums import IntegerChoices
 from django.utils import timezone
-from django.contrib.auth.models import User
+from account.models import Account
 
 # Create your models here.
 
@@ -19,7 +19,7 @@ class List(models.Model):
 
     SCORE = ((str(x), str(x)) for x in range(1, 11))
 
-    user = models.ForeignKey(User, on_delete=CASCADE)
+    user = models.ForeignKey(Account, on_delete=CASCADE)
     type = models.CharField(max_length=5, choices=TYPE, blank=True)
     movie_id = models.CharField(max_length=20)
     status = models.CharField(max_length=20, choices=STATUS)
