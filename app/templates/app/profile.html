@@ -10,36 +10,56 @@
 {% block body %}
 {{ permission|json_script:"auth" }}
 {{ username|json_script:"username" }}
+{{ following|json_script:"follow" }}
 <main>
-    <div class="profile-container">
-        <div class="profile-picture"></div>
-        <h5 class="username text-center">{{username}}</h5>
-        <div class="filter-container">
-            <h5 class="info-title">Filters</h5>
-            <label for="filter_status" style="font-size: 12px;">Status</label>
-            <select class="form-control" name="status" required id="filter_status">
-                <option value="All" selected>All</option>
-                <option value="Favorite">Favorite</option>
-                <option value="Watching">Watching</option>
-                <option value="Plan to watch">Plan to watch</option>
-                <option value="Completed">Completed</option>
-                <option value="On hold">On hold</option>
-            </select>
-            <br>
-            <label for="filter_sort" style="font-size: 12px;">Sort by</label>
-            <select class="form-control" name="status" required id="filter_sort">
-                <option value="score">Score</option>
-                <option value="date_added" selected>Date Added</option>
-            </select>
+    <div class="side-panel">
+        <div class="profile-container">
+            <div class="profile-picture"></div>
+            <h5 class="username text-center">{{username}}</h5>
+            {% if not permission%}
+            <div class="follow-btn">follow</div>
+            {% endif %}
+            <div class="filter-container">
+                <h5 class="info-title">Filters</h5>
+                <label for="filter_status" style="font-size: 12px;">Status</label>
+                <select class="form-control" name="status" required id="filter_status">
+                    <option value="All" selected>All</option>
+                    <option value="Favorite">Favorite</option>
+                    <option value="Watching">Watching</option>
+                    <option value="Plan to watch">Plan to watch</option>
+                    <option value="Completed">Completed</option>
+                    <option value="On hold">On hold</option>
+                </select>
+                <br>
+                <label for="filter_sort" style="font-size: 12px;">Sort by</label>
+                <select class="form-control" name="status" required id="filter_sort">
+                    <option value="score">Score</option>
+                    <option value="date_added" selected>Date Added</option>
+                </select>
+            </div>
+            <div class="stat-container">
+                <h5 class="info-title mt-4 mb-2">Stats</h5>
+                <div class="stat-card total"></div>
+                <div class="stat-card comp"></div>
+                <div class="stat-card watch"></div>
+                <div class="stat-card ptw"></div>
+                <div class="stat-card oh"></div>
+            </div>
         </div>
-        <div class="stat-container">
-            <h5 class="info-title mt-4 mb-2">Stats</h5>
-            <div class="stat-card total"></div>
-            <div class="stat-card comp"></div>
-            <div class="stat-card watch"></div>
-            <div class="stat-card ptw"></div>
-            <div class="stat-card oh"></div>
+        {% if permission %}
+        <div class="following-list">
+            <h5>Following</h5>
+            {% if followingList|length == 0 %}
+            <p id="follow-list-help-text">Users you follow will be shown here</p>
+            {% endif %}
+            {% for item in followingList %}
+            <a href="{% url 'profile' item.following %}" class="user-card">
+                <div class="user-profile-picture"></div>
+                <p>{{item.following}}</p>
+            </a>
+            {% endfor %}
         </div>
+        {% endif %}
     </div>
     <div class="list-container">
     </div>

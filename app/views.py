@@ -2,7 +2,7 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
-from account.models import Account
+from account.models import Account, Follower
 import requests
 import json
 
@@ -188,7 +188,17 @@ def profile(request, username):
         same view is called when viewing our own or others profile, so permission variable is  created.
     """
     permission = username == request.user.username
-    context = {'username': username, 'permission': permission}
+
+    # to check if the requested user is already being followed
+    following = Follower.objects.filter(
+        person=request.user, following__username=username).exists()
+
+    context = {'username': username,
+               'permission': permission, "following": following, }
+
+    if permission:
+        followingList = Follower.objects.filter(person=request.user)
+        context["followingList"] = followingList
 
     return render(request, 'app/profile.html', context)
 
@@ -230,4 +240,18 @@ def list(request, username):
 def remove(request, id):
     item = List.objects.get(user=request.user, movie_id=id)
     item.delete()
+    return HttpResponse('')
+
+
+def follow(request, username):
+    following = Account.objects.get(username=username)
+    instance = Follower(person=request.user, following=following)
+    instance.save()
+    return HttpResponse('')
+
+
+def unfollow(request, username):
+    following = Account.objects.get(username=username)
+    instance = Follower.objects.get(person=request.user, following=following)
+    instance.delete()
     return HttpResponse('')

@@ -35,6 +35,8 @@ class MyAccountManager(BaseUserManager):
 class Account(AbstractBaseUser):
     email = models.EmailField(max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
+    following = models.ManyToManyField(
+        'self', through='Follower', symmetrical=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -54,3 +56,13 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Follower(models.Model):
+    person = models.ForeignKey(
+        Account, on_delete=models.CASCADE, related_name='source')
+    following = models.ForeignKey(
+        Account, on_delete=models.CASCADE, related_name='target')
+
+    def __str__(self):
+        return self.person.username + '->' + self.following.username

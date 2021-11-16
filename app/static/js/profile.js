@@ -20,7 +20,6 @@ const listContainer = document.querySelector(".list-container")
 const permission = JSON.parse(document.getElementById('auth').textContent)
 const username = JSON.parse(document.getElementById('username').textContent)
 
-
 // Event listeners
 
 document.getElementById("delete-btn").addEventListener("click", event => {
@@ -240,6 +239,49 @@ window.onload = () =>
                 populateList([...data.data], filter_status.value, event.target.value)
             })
         })
+
+
+// follow/unfollow logic
+if (!permission) {
+
+
+    let following = JSON.parse(document.getElementById('follow').textContent)
+    const follow_btn = document.querySelector(".follow-btn")
+
+
+    if (following) {
+        follow_btn.innerHTML = "Unfollow"
+    }
+    else {
+        follow_btn.innerHTML = "Follow"
+    }
+
+    follow_btn.addEventListener("click", async event => {
+        if (following) {
+            const response = await fetch(`/unfollow/${username}/`)
+            if (response.ok) {
+                following = false
+                follow_btn.innerHTML = "Follow"
+            }
+            else {
+                console.log("some error occured")
+            }
+
+        }
+
+        else {
+            const response = await fetch(`/follow/${username}/`)
+            if (response.ok) {
+                following = true
+                follow_btn.innerHTML = "UnFollow"
+            }
+            else {
+                console.log("some error occuress")
+            }
+        }
+    })
+}
+
 
 
 
