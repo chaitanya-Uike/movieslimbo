@@ -84,6 +84,7 @@ body{
     grid-gap:5px;
     align-items: center;
     background-color: white;
+    font-size: clamp(10px, 1vw, 16px);
     width: 90%;
     margin: 5px 0px;
     padding: 10px;

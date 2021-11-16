@@ -2,6 +2,8 @@ const editContainer = document.querySelector(".edit-container")
 const closeEditContainer = document.querySelector(".close-edit-container")
 const form = document.querySelector("#edit-form")
 let favoriteBtn = document.querySelector("#id_favorite")
+const filter_status = document.getElementById("filter_status")
+const filter_sort = document.getElementById("filter_sort")
 
 async function fetchList(username) {
     const response = await fetch(`/list/${username}/`)
@@ -41,13 +43,14 @@ favoriteBtn.addEventListener("click", favoriteBtnToggle)
 
 //event delegation
 let id
+let type
 function editButtonClicked(event) {
     let card = event.target.parentElement
     id = card.getAttribute("id")
-    data = JSON.parse(document.getElementById(`data-${id}`).textContent)
+    let data = JSON.parse(document.getElementById(`data-${id}`).textContent)
     type = data.type
-    backdrop = data.backdrop
-    title = data.title
+    let backdrop = data.backdrop
+    let title = data.title
 
     editContainer.style.display = "block"
     closeEditContainer.style.display = "block"
@@ -84,8 +87,27 @@ async function updateData(csrftoken, status, score, favorite) {
     })
 
     if (response.ok) {
-        console.log("saved successfully!")
-        location.reload()
+        fetchList(username)
+            .then(data => {
+
+                showStats(data.distribution)
+
+                populateList(data.data, filter_status.value, filter_sort.value)
+
+                //[...data] gives the copy of an array, send a copy bcoz .sort() is inplace
+
+                filter_status.addEventListener("change", event => {
+                    populateList([...data.data], event.target.value, filter_sort.value)
+                })
+
+                filter_sort.addEventListener("change", event => {
+                    populateList([...data.data], filter_status.value, event.target.value)
+                })
+            })
+
+        //close the editContainer
+        editContainer.style.display = ""
+        closeEditContainer.style.display = ""
     }
     else {
         console.log("some error occured!")
@@ -95,7 +117,12 @@ async function updateData(csrftoken, status, score, favorite) {
 async function removeData() {
     const response = await fetch(`/remove/${id}/`)
     if (response.ok) {
-        location.reload()
+        removedChild = document.getElementById(id)
+        listContainer.removeChild(removedChild)
+
+        //close the edit container
+        editContainer.style.display = ""
+        closeEditContainer.style.display = ""
     }
 }
 
@@ -177,11 +204,21 @@ function populateList(data, status, sort) {
 }
 
 function showStats(stats) {
-    document.querySelector(".total").innerHTML += `<p>${stats['total']}</p>`
-    document.querySelector(".comp").innerHTML += `<p>${stats['Completed']}</p>`
-    document.querySelector(".watch").innerHTML += `<p>${stats['Watching']}</p>`
-    document.querySelector(".ptw").innerHTML += `<p>${stats['Plan to watch']}</p>`
-    document.querySelector(".oh").innerHTML += `<p>${stats['On hold']}</p>`
+    document.querySelector(".total").innerHTML =
+        `<p class="heading">Total entries</p>
+        <p>${stats['total']}</p>`
+    document.querySelector(".comp").innerHTML =
+        `<p class="heading">Completed</p>
+        <p>${stats['Completed']}</p>`
+    document.querySelector(".watch").innerHTML =
+        `<p class="heading">watching</p>
+        <p>${stats['Watching']}</p>`
+    document.querySelector(".ptw").innerHTML =
+        `<p class="heading">Plan to watch</p>
+        <p>${stats['Plan to watch']}</p>`
+    document.querySelector(".oh").innerHTML =
+        `<p class="heading">On hold</p>
+        <p>${stats['On hold']}</p>`
 }
 
 
@@ -192,9 +229,6 @@ window.onload = () =>
             showStats(data.distribution)
 
             populateList(data.data, "All", "date_added")
-
-            const filter_status = document.getElementById("filter_status")
-            const filter_sort = document.getElementById("filter_sort")
 
             //[...data] gives the copy of an array, send a copy bcoz .sort() is inplace
 
