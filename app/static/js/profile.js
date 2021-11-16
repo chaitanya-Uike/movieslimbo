@@ -116,10 +116,25 @@ async function updateData(csrftoken, status, score, favorite) {
 async function removeData() {
     const response = await fetch(`/remove/${id}/`)
     if (response.ok) {
-        removedChild = document.getElementById(id)
-        listContainer.removeChild(removedChild)
+        fetchList(username)
+            .then(data => {
 
-        //close the edit container
+                showStats(data.distribution)
+
+                populateList(data.data, filter_status.value, filter_sort.value)
+
+                //[...data] gives the copy of an array, send a copy bcoz .sort() is inplace
+
+                filter_status.addEventListener("change", event => {
+                    populateList([...data.data], event.target.value, filter_sort.value)
+                })
+
+                filter_sort.addEventListener("change", event => {
+                    populateList([...data.data], filter_status.value, event.target.value)
+                })
+            })
+
+        //close the editContainer
         editContainer.style.display = ""
         closeEditContainer.style.display = ""
     }
