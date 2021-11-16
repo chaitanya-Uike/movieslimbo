@@ -73,7 +73,9 @@
 }
 
 #delete-btn{
+    float: left;
     display: none;
+    margin: 0 10px;
 }
 
 #delete-btn:hover{
