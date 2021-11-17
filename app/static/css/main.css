@@ -17,10 +17,11 @@
 }
 
 #close-search-container{
+    z-index: 1;
     display: none;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     left: 50%;
     top: 50%;
@@ -30,7 +31,7 @@
 
 .search-container{
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 #movie-result-container{

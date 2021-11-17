@@ -1,8 +1,24 @@
 {% extends 'app/main.html' %}
 
+{% load static %}
+
 {% block title %}Home{% endblock title %}
 {% block homeactive %}active{% endblock homeactive %}
+{% block style %}{% static 'css/home.css' %}{% endblock style %}
+{% block script %}{% static 'js/home.js' %}{% endblock script %}{% static 'js/home.js' %}
 
 {% block body %}
+<div id="carouselInterval" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
 
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
 {% endblock body %}

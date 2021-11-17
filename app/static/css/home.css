@@ -1,0 +1,13 @@
+.carousel-item{
+    height: 500px;
+    text-decoration: none;
+}
+
+.carousel-img{
+    text-decoration: none;
+    z-index: -1;
+}
+
+.carousel-caption h5{
+    font-size: 30px;
+}
