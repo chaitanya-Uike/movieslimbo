@@ -38,6 +38,7 @@ class Account(AbstractBaseUser):
     following = models.ManyToManyField(
         'self', through='Follower', symmetrical=False)
     date_joined = models.DateTimeField(auto_now_add=True)
+    profile_pic = models.ImageField(default='default.jpg')
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

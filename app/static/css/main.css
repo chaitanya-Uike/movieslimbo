@@ -156,4 +156,5 @@
     border-radius: 5px;
     width: 50px;
     height: 70px;
+    object-fit: cover;
 }

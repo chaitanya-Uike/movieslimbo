@@ -2,9 +2,10 @@
     display: none;
     width: 60vw;
     max-width: 500px;
-    height: 300px;
     background-color: white;
     border-radius: 5px;
+
+    padding-bottom: 10px;
 
     position: fixed;
     left: 50%;
@@ -29,7 +30,7 @@
 .edit-container-backdrop{
     object-fit: cover;
     width: 100%;
-    height: 35%;
+    height: 105px;
     background-color: lightcyan;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;

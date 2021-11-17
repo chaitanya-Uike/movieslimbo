@@ -112,7 +112,8 @@ def searchUsers(request):
             data = Account.objects.filter(
                 username__icontains=keyword, is_staff=False).exclude(username=request.user.username)
             for result in data:
-                results.append({"username": result.username})
+                results.append({"username": result.username,
+                               "profilePic": result.profile_pic.url})
 
             return JsonResponse({"results": results})
         else:
@@ -183,6 +184,15 @@ def update(request, id, type):
 
 
 def profile(request, username):
+
+    if request.method == "POST":
+        instance = Account.objects.get(username=username)
+        instance.profile_pic = request.FILES['file']
+        instance.save()
+
+    account = Account.objects.filter(username=username)
+    if not account:
+        return HttpResponse(status_code=404)
     """
         to check if the user has permission to edit the list.
         same view is called when viewing our own or others profile, so permission variable is  created.
@@ -193,8 +203,11 @@ def profile(request, username):
     following = Follower.objects.filter(
         person=request.user, following__username=username).exists()
 
+    # get the profile pic url
+    profilePic = account.first().profile_pic.url
+
     context = {'username': username,
-               'permission': permission, "following": following, }
+               'permission': permission, "following": following, "profilePic": profilePic}
 
     if permission:
         followingList = Follower.objects.filter(person=request.user)
@@ -254,4 +267,9 @@ def unfollow(request, username):
     following = Account.objects.get(username=username)
     instance = Follower.objects.get(person=request.user, following=following)
     instance.delete()
+    return HttpResponse('')
+
+
+def updateProfilePic(request, username):
+    print(request.POST)
     return HttpResponse('')

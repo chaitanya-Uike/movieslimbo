@@ -14,7 +14,18 @@
 <main>
     <div class="side-panel">
         <div class="profile-container">
-            <div class="profile-picture"></div>
+            <img src="{{profilePic}}" class="profile-picture"></img>
+            {% if permission %}
+            <form id="profile-pic-form" action="" method="post" , enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="img-input" class="file-upload">
+                    <div class="add-icon">
+                        <i class="material-icons">camera_alt</i>
+                    </div>
+                </label>
+                <input type="file" name="file" id="img-input" accept="image/*" onchange="form.submit()">
+            </form>
+            {% endif %}
             <h5 class="username text-center">{{username}}</h5>
             {% if not permission%}
             <div class="follow-btn">follow</div>
@@ -54,8 +65,8 @@
             {% endif %}
             {% for item in followingList %}
             <a href="{% url 'profile' item.following %}" class="user-card">
-                <div class="user-profile-picture"></div>
-                <p>{{item.following}}</p>
+                <img src="{{item.following.profile_pic.url}}" class="user-profile-picture"></img>
+                <p>{{item.following.username}}</p>
             </a>
             {% endfor %}
         </div>

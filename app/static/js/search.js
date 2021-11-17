@@ -135,7 +135,7 @@ async function searchUsers(csrftoken, keyword) {
         results.slice(0, 5).forEach(result => {
             userResultContainer.innerHTML += `
             <a href="/profile/${result.username}" class="user-result-card text-decoration-none">
-                <div class="user-profile"></div>
+                <img src="${result.profilePic}" class="user-profile"></img>
                 <h5>${result.username}</h5>
             </a>
                 `

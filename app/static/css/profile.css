@@ -31,7 +31,32 @@ main{
     width: 150px;
     border-radius: 50%;
     background-color: lightcyan;
+    object-fit: cover;
 }
+
+input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
+.file-upload {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    left: 50px;
+    bottom: 25px;
+}
+
+.file-upload i{
+    font-size: 30px;
+}
+
 
 .following-list{
     display: flex;
@@ -72,6 +97,7 @@ main{
     height: 40px;
     border-radius: 5px;
     background-color: lightcyan;
+    object-fit: cover;
 }
 .username{
     margin: 10px;
